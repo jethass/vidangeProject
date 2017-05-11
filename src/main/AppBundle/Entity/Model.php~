@@ -1,0 +1,38 @@
+<?php
+
+namespace main\AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Model
+ *
+ * @ORM\Table(name="model")
+ * @ORM\Entity(repositoryClass="main\AppBundle\Repository\ModelRepository")
+ */
+class Model
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * Many model have One marque
+     * @ORM\ManyToOne(targetEntity="main\AppBundle\Entity\Marque", inversedBy="models")
+     * @ORM\JoinColumn(name="marque_id", referencedColumnName="id")
+     */
+    private $marque;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="model", type="string", length=255)
+     */
+    private $model;
+
+}

@@ -1,0 +1,53 @@
+<?php
+
+namespace main\AppBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Car
+ *
+ * @ORM\Table(name="car")
+ * @ORM\Entity(repositoryClass="main\AppBundle\Repository\CarRepository")
+ */
+class Car
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="main\AppBundle\Entity\Marque")
+     * @ORM\JoinColumn(name="marque_id", referencedColumnName="id")
+     */
+    private $marque;
+    
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="boite_vitesse", type="string", length=255)
+     */
+    private $boiteVitesse;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="carburant", type="string", length=255)
+     */
+    private $carburant;
+
+    /**
+     * @var \Date
+     *
+     * @ORM\Column(name="date_mec", type="date")
+     */
+    private $dateMec;
+
+   
+}
