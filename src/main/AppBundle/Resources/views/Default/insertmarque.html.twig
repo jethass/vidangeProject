@@ -1,5 +1,9 @@
 votre form:
-
+{% for message in app.session.flashBag.get('notice') %}
+    <div class="flash-notice">
+        {{ message }}
+    </div>
+{% endfor %}
 {{ form_start(form) }}
     {{ form_widget(form) }}
 {{ form_end(form) }}

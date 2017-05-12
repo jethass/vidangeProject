@@ -26,7 +26,20 @@ class CarType extends AbstractType
                                                                 'expanded' => false,
                                                             )
                 )
-                ->add('boiteVitesse')
+                ->add('model', EntityType::class, array(
+                                                        'class'         => 'mainAppBundle:Model',                                                                'choice_label'    => 'name',
+                                                        'choice_label' => 'name',
+                                                        'multiple' => false,
+                                                        'expanded' => false,
+                                                    )
+                )
+                ->add('boiteVitesse', ChoiceType::class, array(
+                                                            'choices'  => array(
+                                                                'Manuelle' => 'Manuelle',
+                                                                'Auto' => 'Auto',
+                                                            )
+                                                        )
+                )
                 ->add('carburant', ChoiceType::class, array(
                                                             'choices'  => array(
                                                                 'Essence' => 'Essence',

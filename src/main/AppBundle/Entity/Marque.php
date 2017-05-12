@@ -28,6 +28,24 @@ class Marque
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="main\AppBundle\Entity\Model", mappedBy="marque")
+     */
+    private $models;
+
+    /**
+     * @ORM\OneToMany(targetEntity="main\AppBundle\Entity\Car", mappedBy="marque")
+     */
+    private $cars;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->models = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->cars = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -61,5 +79,73 @@ class Marque
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Add model
+     *
+     * @param \main\AppBundle\Entity\Model $model
+     *
+     * @return Marque
+     */
+    public function addModel(\main\AppBundle\Entity\Model $model)
+    {
+        $this->models[] = $model;
+
+        return $this;
+    }
+
+    /**
+     * Remove model
+     *
+     * @param \main\AppBundle\Entity\Model $model
+     */
+    public function removeModel(\main\AppBundle\Entity\Model $model)
+    {
+        $this->models->removeElement($model);
+    }
+
+    /**
+     * Get models
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getModels()
+    {
+        return $this->models;
+    }
+
+    /**
+     * Add car
+     *
+     * @param \main\AppBundle\Entity\Car $car
+     *
+     * @return Marque
+     */
+    public function addCar(\main\AppBundle\Entity\Car $car)
+    {
+        $this->cars[] = $car;
+
+        return $this;
+    }
+
+    /**
+     * Remove car
+     *
+     * @param \main\AppBundle\Entity\Car $car
+     */
+    public function removeCar(\main\AppBundle\Entity\Car $car)
+    {
+        $this->cars->removeElement($car);
+    }
+
+    /**
+     * Get cars
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCars()
+    {
+        return $this->cars;
     }
 }

@@ -22,10 +22,16 @@ class Car
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="main\AppBundle\Entity\Marque")
+     * @ORM\ManyToOne(targetEntity="main\AppBundle\Entity\Marque", inversedBy="cars",cascade={"persist"})
      * @ORM\JoinColumn(name="marque_id", referencedColumnName="id")
      */
     private $marque;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="main\AppBundle\Entity\Model", cascade={"persist"})
+     * @ORM\JoinColumn(name="model_id", referencedColumnName="id")
+     */
+    private $model;
     
 
     /**
@@ -49,5 +55,5 @@ class Car
      */
     private $dateMec;
 
-   
+
 }

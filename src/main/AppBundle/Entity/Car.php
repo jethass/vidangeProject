@@ -22,10 +22,16 @@ class Car
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="main\AppBundle\Entity\Marque",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="main\AppBundle\Entity\Marque", inversedBy="cars",cascade={"persist"})
      * @ORM\JoinColumn(name="marque_id", referencedColumnName="id")
      */
     private $marque;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="main\AppBundle\Entity\Model", cascade={"persist"})
+     * @ORM\JoinColumn(name="model_id", referencedColumnName="id")
+     */
+    private $model;
     
 
     /**
@@ -49,7 +55,7 @@ class Car
      */
     private $dateMec;
 
-   
+
 
     /**
      * Get id
@@ -155,5 +161,29 @@ class Car
     public function getMarque()
     {
         return $this->marque;
+    }
+
+    /**
+     * Set model
+     *
+     * @param \main\AppBundle\Entity\Model $model
+     *
+     * @return Car
+     */
+    public function setModel(\main\AppBundle\Entity\Model $model = null)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * Get model
+     *
+     * @return \main\AppBundle\Entity\Model
+     */
+    public function getModel()
+    {
+        return $this->model;
     }
 }
