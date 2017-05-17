@@ -4,12 +4,13 @@ namespace main\AppBundle\Controller;
 
 use main\AppBundle\Entity\Marque;
 use main\AppBundle\Entity\Model;
-use main\AppBundle\Form\MarqueType;
-use main\AppBundle\Form\ModelType;
+use main\AppBundle\Form\Type\MarqueType;
+use main\AppBundle\Form\Type\ModelType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use main\AppBundle\Entity\Car;
-use main\AppBundle\Form\CarType;
+use main\AppBundle\Form\Type\CarType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -20,12 +21,11 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-
+        $em = $this->getDoctrine()->getManager();
         $car = new Car();
         $form = $this->createForm(CarType::class, $car);
 
         if ($form->handleRequest($request)->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $em->persist($car);
             $em->flush();
             $this->addFlash(
@@ -34,6 +34,30 @@ class DefaultController extends Controller
             );
         }
         return $this->render('mainAppBundle:Default:index.html.twig', array('form'=> $form->createView()));
+    }
+
+    /**
+     * @Route("/getmodelsmarque/{id_marque}", options={"expose"=true}, name="models_for_marque")
+     */
+    public function getModelsMarqueAction(Request $request,$id_marque)
+    {
+      if($request->isXmlHttpRequest()){
+          $em=$this->getDoctrine()->getManager();
+          $models_list=$em->getRepository('mainAppBundle:Model')->findBy(array('marque' => $id_marque));
+           if ($models_list){
+               $models=array();
+               foreach ($models_list as $model){
+                   $models[$model->getId()]=$model->getName();
+               }
+           }  else{
+               $models=null;
+           }
+           $response=new JsonResponse();
+           return $response->setData(array('models'=>$models));
+           //return $this->render('mainAppBundle:Default:modelsmarque.html.twig', array('models'=> $models));
+      }else{
+          throw new \Exception('erreur');
+      }
     }
 
     /**

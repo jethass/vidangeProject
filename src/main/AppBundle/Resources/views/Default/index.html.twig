@@ -1,9 +1,16 @@
+{% extends '::base.html.twig' %}
+{% block body %}
 votre form:
-{% for message in app.session.flashBag.get('notice') %}
-    <div class="flash-notice">
-        {{ message }}
-    </div>
-{% endfor %}
+
+<div class="notice">
+    {% for message in app.session.flashBag.get('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+
 {{ form_start(form) }}
     {{ form_widget(form) }}
 {{ form_end(form) }}
+{% endblock %}
