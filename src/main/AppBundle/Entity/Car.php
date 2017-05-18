@@ -32,7 +32,11 @@ class Car
      * @ORM\JoinColumn(name="model_id", referencedColumnName="id")
      */
     private $model;
-    
+
+    /**
+     * @ORM\ManyToMany(targetEntity="main\AppBundle\Entity\Tag", cascade={"persist"})
+     */
+    private $tags;
 
     /**
      * @var string
@@ -54,8 +58,14 @@ class Car
      * @ORM\Column(name="date_mec", type="date")
      */
     private $dateMec;
-
-
+  
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -185,5 +195,39 @@ class Car
     public function getModel()
     {
         return $this->model;
+    }
+
+    /**
+     * Add tag
+     *
+     * @param \main\AppBundle\Entity\Tag $tag
+     *
+     * @return Car
+     */
+    public function addTag(\main\AppBundle\Entity\Tag $tag)
+    {
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Remove tag
+     *
+     * @param \main\AppBundle\Entity\Tag $tag
+     */
+    public function removeTag(\main\AppBundle\Entity\Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

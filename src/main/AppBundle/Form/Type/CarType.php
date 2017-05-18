@@ -10,6 +10,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use main\AppBundle\Form\Type\TagType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use main\AppBundle\Form\EventListener\CarFieldListener;
@@ -60,7 +63,19 @@ class CarType extends AbstractType
                                                             )
                                                            )
                 )
-                ->add('dateMec')
+                ->add('dateMec', DateType::class, array(
+                    'widget' => 'single_text',
+                    'html5' => false,
+                    'label'=>'date mise en circulation',
+                    'attr' => ['class' => 'js-datepicker'],
+                    'format' => 'dd/MM/yyyy',
+                ))
+                ->add('tags', CollectionType::class, array(
+                    'entry_type'   => TagType::class,
+                    'allow_add' => true,
+                    'prototype' => true,
+                    //'attr' => array('class'=>'select2')
+                ))
                 ->add('save',SubmitType::class);
 
                  $builder->get('marque')->addEventSubscriber(new CarFieldListener($this->manager));

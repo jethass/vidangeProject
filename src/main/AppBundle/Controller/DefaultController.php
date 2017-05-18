@@ -4,6 +4,7 @@ namespace main\AppBundle\Controller;
 
 use main\AppBundle\Entity\Marque;
 use main\AppBundle\Entity\Model;
+use main\AppBundle\Entity\Tag;
 use main\AppBundle\Form\Type\MarqueType;
 use main\AppBundle\Form\Type\ModelType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -106,6 +107,26 @@ class DefaultController extends Controller
         }
 
         return $this->render('mainAppBundle:Default:insertmodel.html.twig', array('form'=> $form->createView()));
+    }
 
+    /**
+     * @Route("/loadtags")
+     */
+    public function loaFisxturesdAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $marque=$em->getRepository('mainAppBundle:Marque')->findOneBy(array('name'=>'Fiat'));
+        $tags = array(
+            'DCT',
+            'MULTIJET',
+        );
+        foreach ($tags as $tag) {
+            $t = new Tag();
+            $t->setName($tag);
+            $t->setMarque($marque);
+            $em->persist($t);
+        }
+        $em->flush();
+        die;
     }
 }

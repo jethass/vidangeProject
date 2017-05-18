@@ -32,7 +32,11 @@ class Car
      * @ORM\JoinColumn(name="model_id", referencedColumnName="id")
      */
     private $model;
-    
+
+    /**
+     * @ORM\ManyToMany(targetEntity="main\AppBundle\Entity\Tag", cascade={"persist"})
+     */
+    private $tags;
 
     /**
      * @var string
@@ -54,6 +58,5 @@ class Car
      * @ORM\Column(name="date_mec", type="date")
      */
     private $dateMec;
-
-
+  
 }

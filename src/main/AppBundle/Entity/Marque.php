@@ -39,12 +39,18 @@ class Marque
     private $cars;
 
     /**
+     * @ORM\OneToMany(targetEntity="main\AppBundle\Entity\Tag", mappedBy="marque")
+     */
+    private $tags;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->models = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cars = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -147,5 +153,39 @@ class Marque
     public function getCars()
     {
         return $this->cars;
+    }
+
+    /**
+     * Add tag
+     *
+     * @param \main\AppBundle\Entity\Tag $tag
+     *
+     * @return Marque
+     */
+    public function addTag(\main\AppBundle\Entity\Tag $tag)
+    {
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Remove tag
+     *
+     * @param \main\AppBundle\Entity\Tag $tag
+     */
+    public function removeTag(\main\AppBundle\Entity\Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

@@ -1,6 +1,5 @@
 {% extends '::base.html.twig' %}
 {% block body %}
-votre form:
 
 <div class="notice">
     {% for message in app.session.flashBag.get('notice') %}
@@ -11,6 +10,50 @@ votre form:
 </div>
 
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <div>Marque:</div>
+    <div>
+       {{ form_errors(form.marque) }}
+       {{ form_widget(form.marque) }}
+    </div>
+
+    <div>Model:</div>
+    <div>
+        {{ form_errors(form.model) }}
+        {{ form_widget(form.model) }}
+    </div>
+
+    <div>Boite de vitesse:</div>
+    <div>
+        {{ form_errors(form.boiteVitesse) }}
+        {{ form_widget(form.boiteVitesse) }}
+    </div>
+
+    <div>Carburant:</div>
+    <div>
+        {{ form_errors(form.carburant) }}
+        {{ form_widget(form.carburant) }}
+    </div>
+
+    <div>Date mise en circulation:</div>
+    <div>
+        {{ form_errors(form.dateMec) }}
+        {{ form_widget(form.dateMec) }}
+    </div>
+
+    <div>Finitions:</div>
+    <ul id="tags-fields-list"
+        data-prototype="{{ form_widget(form.tags.vars.prototype)|e }}">
+        {% for tagField in form.tags %}
+            <li>
+                {{ form_errors(tagField) }}
+                {{ form_widget(tagField) }}
+            </li>
+        {% endfor %}
+
+    </ul>
+    <li><a href="#" id="add-another-tag">Add another finition</a></li>
+
+
+
 {{ form_end(form) }}
 {% endblock %}
