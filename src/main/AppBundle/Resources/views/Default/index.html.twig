@@ -41,6 +41,11 @@
     </div>
 
     <div>Finitions:</div>
+    <div id="finition">
+        {{ form_errors(form.tags) }}
+        {{ form_widget(form.tags) }}
+    </div>
+    {#%
     <ul id="tags-fields-list"
         data-prototype="{{ form_widget(form.tags.vars.prototype)|e }}">
         {% for tagField in form.tags %}
@@ -51,7 +56,7 @@
         {% endfor %}
 
     </ul>
-    <li><a href="#" id="add-another-tag">Add another finition</a></li>
+    <li><a href="#" id="add-another-tag">Add another finition</a></li>%#}
 
 
 

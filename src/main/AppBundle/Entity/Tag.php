@@ -33,8 +33,9 @@ class Tag
      * @ORM\JoinColumn(name="marque_id", referencedColumnName="id")
      */
     private $marque;
-       
+    
 
+  
     /**
      * Get id
      *
@@ -91,5 +92,11 @@ class Tag
     public function getMarque()
     {
         return $this->marque;
+    }
+
+    public function __toString()
+    {
+
+        return $this->getName();
     }
 }

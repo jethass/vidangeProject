@@ -70,12 +70,24 @@ class CarType extends AbstractType
                     'attr' => ['class' => 'js-datepicker'],
                     'format' => 'dd/MM/yyyy',
                 ))
-                ->add('tags', CollectionType::class, array(
+                /*->add('tags', CollectionType::class, array(
                     'entry_type'   => TagType::class,
                     'allow_add' => true,
                     'prototype' => true,
                     //'attr' => array('class'=>'select2')
+                ))*/
+                ->add('tags',EntityType::class, array(
+                    'attr'=>array('class'=>"tags",),
+                    'label'=>'finition',
+                    'choices_as_values' => true,                
+                    'class' => 'mainAppBundle:Tag',
+                    'choice_label' => 'name',
+                    'multiple' => false,
+                    'expanded' => false,
+                    'multiple'=>true
                 ))
+
+
                 ->add('save',SubmitType::class);
 
                  $builder->get('marque')->addEventSubscriber(new CarFieldListener($this->manager));

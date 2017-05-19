@@ -53,9 +53,19 @@ class DefaultController extends Controller
            }  else{
                $models=null;
            }
+
+          $tags_list=$em->getRepository('mainAppBundle:Tag')->findBy(array('marque' => $id_marque));
+          if ($tags_list){
+              $tags=array();
+              foreach ($tags_list as $tag){
+                  $tags[$tag->getId()]=$tag->getName();
+              }
+          }  else{
+              $tags=null;
+          }
+          
            $response=new JsonResponse();
-           return $response->setData(array('models'=>$models));
-           //return $this->render('mainAppBundle:Default:modelsmarque.html.twig', array('models'=> $models));
+           return $response->setData(array('models'=>$models,'tags'=>$tags));
       }else{
           throw new \Exception('erreur');
       }
