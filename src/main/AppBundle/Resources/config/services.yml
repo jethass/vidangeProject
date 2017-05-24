@@ -1,4 +1,30 @@
 services:
-#    src_app.example:
-#        class: main\AppBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    main.app.form.type.car:
+        class: main\AppBundle\Form\Type\CarType
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: form.type }
+
+    main.app.entity.tagg_repository:
+        class: main\AppBundle\Repository\TaggRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - main\AppBundle\Entity\Tagg
+
+    main.app.form.modeltransformer_tagg:
+        class: main\AppBundle\Form\DataTransformer\TaggModelTransformer
+        arguments: ['@main.app.entity.tagg_repository']
+
+    main.app.form.viewtransformer_tagg:
+        class: main\AppBundle\Form\DataTransformer\TaggViewTransformer
+
+    main.app.form.type_tagg:
+        class: main\AppBundle\Form\Type\TaggType
+        arguments: ['@main.app.form.modeltransformer_tagg','@main.app.form.viewtransformer_tagg']
+        tags:
+            - { name: form.type }
+
+    main.app.form.type_article:
+        class: main\AppBundle\Form\Type\ArticleType
+        tags:
+            - { name: form.type }

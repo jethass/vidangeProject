@@ -17,7 +17,10 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use main\AppBundle\Form\EventListener\CarFieldListener;
 use main\AppBundle\Form\DataTransformer\stringToModelTransformer;
+use main\AppBundle\Form\DataTransformer\arrayToFileTransformer;
 use Doctrine\Common\Persistence\ObjectManager;
+use main\AppBundle\Form\Type\FilesType;
+use main\AppBundle\Form\Type\ImageType;
 
 class CarType extends AbstractType
 {
@@ -82,16 +85,25 @@ class CarType extends AbstractType
                     'choices_as_values' => true,                
                     'class' => 'mainAppBundle:Tag',
                     'choice_label' => 'name',
-                    'multiple' => false,
                     'expanded' => false,
                     'multiple'=>true
                 ))
 
 
+                ->add('imagePrincipale', ImageType::class,array('required'=>false, 'label'=>'Image Principale :'))
+
+                ->add('files', FilesType::class, array(
+                    'label'    =>    'Photos',
+                    'required' =>    true,
+                    'compound'=>true,
+                    'attr'     =>    array(
+                        'accept'  =>  'images/*',
+                    )
+                ))
                 ->add('save',SubmitType::class);
 
                  $builder->get('marque')->addEventSubscriber(new CarFieldListener($this->manager));
-                
+                 $builder->get('files')->addModelTransformer(new arrayToFileTransformer($this->manager));
                //$builder->get('model')->addModelTransformer(new stringToModelTransformer($this->manager));
     }
     

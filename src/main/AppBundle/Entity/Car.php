@@ -2,12 +2,15 @@
 
 namespace main\AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use main\AppBundle\Entity\Image;
 
 /**
  * Car
  *
  * @ORM\Table(name="car")
  * @ORM\Entity(repositoryClass="main\AppBundle\Repository\CarRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Car
 {
@@ -58,13 +61,29 @@ class Car
      * @ORM\Column(name="date_mec", type="date")
      */
     private $dateMec;
+
+    /**
+     * @ORM\OneToMany(targetEntity="main\AppBundle\Entity\Image", mappedBy="car", cascade={"persist","remove"})
+     */
+    private $images;
+
+    /**
+     * @ORM\OneToOne(targetEntity="main\AppBundle\Entity\Image", cascade={"persist","remove"})
+     */
+    private $imagePrincipale;
+
+    // files des images
+    private $files;
   
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->images = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->files = array();
     }
 
     /**
@@ -230,4 +249,126 @@ class Car
     {
         return $this->tags;
     }
+
+    /**
+     * Add image
+     *
+     * @param \main\AppBundle\Entity\Image $image
+     *
+     * @return Car
+     */
+    public function addImage(\main\AppBundle\Entity\Image $image)
+    {
+        $this->images[] = $image;
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param \main\AppBundle\Entity\Image $image
+     */
+    public function removeImage(\main\AppBundle\Entity\Image $image)
+    {
+        $this->images->removeElement($image);
+    }
+
+    /**
+     * Get images
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * Set imagePrincipale
+     *
+     * @param \main\AppBundle\Entity\Image $imagePrincipale
+     *
+     * @return Car
+     */
+    public function setImagePrincipale(\main\AppBundle\Entity\Image $imagePrincipale = null)
+    {
+        $this->imagePrincipale = $imagePrincipale;
+
+        return $this;
+    }
+
+    /**
+     * Get imagePrincipale
+     *
+     * @return \main\AppBundle\Entity\Image
+     */
+    public function getImagePrincipale()
+    {
+        return $this->imagePrincipale;
+    }
+
+    /********personalisé pour l'uplaod***************************/
+    public function setFiles(array $files)
+    {
+        $this->files=$files;
+        if($files != null){
+            foreach ($this->files as $file){
+                $image=new Image();
+                $image->setFile($file);
+                $this->addImage($image);
+            }
+        }
+        return $this;
+    }
+
+
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        foreach ($this->images as $image){
+            $image->preUpload();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        foreach ($this->images as $image){
+            $image->upload();
+        }
+    }
+
+    /**
+     * @ORM\PreRemove()
+     */
+    public function preRemoveUpload()
+    {
+        foreach ($this->images as $image){
+            $image->preRemoveUpload();
+        }
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        foreach ($this->images as $image){
+            $image->removeUpload();
+        }
+    }
+
+    /*************************************/
 }

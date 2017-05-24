@@ -2,12 +2,15 @@
 
 namespace main\AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use main\AppBundle\Entity\Image;
 
 /**
  * Car
  *
  * @ORM\Table(name="car")
  * @ORM\Entity(repositoryClass="main\AppBundle\Repository\CarRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Car
 {
@@ -58,5 +61,19 @@ class Car
      * @ORM\Column(name="date_mec", type="date")
      */
     private $dateMec;
+
+    /**
+     * @ORM\OneToMany(targetEntity="main\AppBundle\Entity\Image", mappedBy="car", cascade={"persist","remove"})
+     */
+    private $images;
+
+    /**
+     * @ORM\OneToOne(targetEntity="main\AppBundle\Entity\Image", cascade={"persist","remove"})
+     */
+    private $imagePrincipale;
+
+    // files des images
+    private $files;
   
+
 }

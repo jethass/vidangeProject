@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<services>
+    <service id="main.app.entity.tagg_repository"
+             class="main\AppBundle\Repository\TaggRepository"
+             factory-service="doctrine.orm.entity_manager"
+             factory-method="getRepository">
+        <argument>mainAppBundle:Tagg</argument>
+    </service>
+</services>

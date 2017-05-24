@@ -1,9 +1,4 @@
-parameters:
+#parameters:
     #parameter_name: value
-
-services:
-    main.app.form.type.car:
-        class: main\AppBundle\Form\Type\CarType
-        arguments: ["@doctrine.orm.entity_manager"]
-        tags:
-            - { name: form.type }
+#services:
+    #jhjhg
