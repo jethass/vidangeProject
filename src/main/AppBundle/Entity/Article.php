@@ -1,5 +1,4 @@
 <?php
-
 namespace main\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -52,7 +51,7 @@ class Article
     /**
      * @ORM\ManyToMany(targetEntity="main\AppBundle\Entity\Tagg", cascade={"persist"})
      */
-    private $tags;
+    private $taggs;
 
     
     /**
@@ -60,7 +59,7 @@ class Article
      */
     public function __construct()
     {
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->taggs = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -172,13 +171,13 @@ class Article
     /**
      * Add tag
      *
-     * @param \main\AppBundle\Entity\Tagg $tag
+     * @param \main\AppBundle\Entity\Tagg $tagg
      *
      * @return Article
      */
-    public function addTag(\main\AppBundle\Entity\Tagg $tag)
+    public function addTagg(\main\AppBundle\Entity\Tagg $tagg)
     {
-        $this->tags[] = $tag;
+        $this->taggs[] = $tagg;
 
         return $this;
     }
@@ -186,20 +185,20 @@ class Article
     /**
      * Remove tag
      *
-     * @param \main\AppBundle\Entity\Tagg $tag
+     * @param \main\AppBundle\Entity\Tagg $tagg
      */
-    public function removeTag(\main\AppBundle\Entity\Tagg $tag)
+    public function removeTagg(\main\AppBundle\Entity\Tagg $tagg)
     {
-        $this->tags->removeElement($tag);
+        $this->taggs->removeElement($tagg);
     }
 
     /**
-     * Get tags
+     * Get taggs
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getTags()
+    public function getTaggs()
     {
-        return $this->tags;
+        return $this->taggs;
     }
 }

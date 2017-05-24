@@ -4,6 +4,7 @@ namespace main\AppBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use main\AppBundle\Form\Type\TaggType;
 
 class ArticleType extends AbstractType
 {
@@ -18,7 +19,7 @@ class ArticleType extends AbstractType
                  ->add('author')
                  ->add('content')
                  ->add('createdAt')
-                 ->add('tags', TaggType::class);
+                 ->add('taggs', TaggType::class);
     }
     
     /**
