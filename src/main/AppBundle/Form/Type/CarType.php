@@ -73,12 +73,7 @@ class CarType extends AbstractType
                     'attr' => ['class' => 'js-datepicker'],
                     'format' => 'dd/MM/yyyy',
                 ))
-                /*->add('tags', CollectionType::class, array(
-                    'entry_type'   => TagType::class,
-                    'allow_add' => true,
-                    'prototype' => true,
-                    //'attr' => array('class'=>'select2')
-                ))*/
+ 
                 ->add('tags',EntityType::class, array(
                     'attr'=>array('class'=>"tags",),
                     'label'=>'finition',
@@ -92,19 +87,19 @@ class CarType extends AbstractType
 
                 ->add('imagePrincipale', ImageType::class,array('required'=>false, 'label'=>'Image Principale :'))
 
-                ->add('files', FilesType::class, array(
+               /* ->add('files', FilesType::class, array(
                     'label'    =>    'Photos',
                     'required' =>    true,
                     'compound'=>true,
                     'attr'     =>    array(
                         'accept'  =>  'images/*',
                     )
-                ))
+                ))*/
                 ->add('save',SubmitType::class);
 
                  $builder->get('marque')->addEventSubscriber(new CarFieldListener($this->manager));
-                 $builder->get('files')->addModelTransformer(new arrayToFileTransformer($this->manager));
-               //$builder->get('model')->addModelTransformer(new stringToModelTransformer($this->manager));
+                 //$builder->get('files')->addModelTransformer(new arrayToFileTransformer($this->manager));
+                 $builder->get('model')->addModelTransformer(new stringToModelTransformer($this->manager));
     }
     
     /**

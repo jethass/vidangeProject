@@ -1,4 +1,4 @@
-#parameters:
-    #parameter_name: value
-#services:
-    #jhjhg
+parameters:
+    key_google: 'AIzaSyBDV-orx3T9OkESUaTQlIgBndaWROhzmL8'
+    here_api_id: 'DemoAppId01082013GAL'
+    here_app_code: 'AJKnXv84fjrb0KIHawS0Tg'

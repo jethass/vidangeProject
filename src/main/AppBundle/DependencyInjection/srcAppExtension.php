@@ -26,4 +26,5 @@ class srcAppExtension extends Extension
         $loader->load('services.yml');
         //$loader->load('doctrine.xml');
     }
+
 }

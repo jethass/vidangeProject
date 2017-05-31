@@ -4,27 +4,17 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
         tags:
             - { name: form.type }
-
-    main.app.entity.tagg_repository:
-        class: main\AppBundle\Repository\TaggRepository
-        factory: ["@doctrine.orm.entity_manager", getRepository]
-        arguments:
-            - main\AppBundle\Entity\Tagg
-
-    main.app.form.modeltransformer_tagg:
-        class: main\AppBundle\Form\DataTransformer\TaggModelTransformer
-        arguments: ['@main.app.entity.tagg_repository']
-
-    main.app.form.viewtransformer_tagg:
-        class: main\AppBundle\Form\DataTransformer\TaggViewTransformer
-
-    main.app.form.type_tagg:
-        class: main\AppBundle\Form\Type\TaggType
-        arguments: ['@main.app.form.modeltransformer_tagg','@main.app.form.viewtransformer_tagg']
+    main.app.google_locator:
+        class: main\AppBundle\Services\GooglePlaceLocator
+        arguments: ['%key_google%']
         tags:
-            - { name: form.type }
-
-    main.app.form.type_article:
-        class: main\AppBundle\Form\Type\ArticleType
+            - { name: place_locator }
+    main.app.here_locator:
+        class: main\AppBundle\Services\HerePlaceLocator
+        arguments: ['%here_api_id%','%here_app_code%']
         tags:
-            - { name: form.type }
+            - { name: place_locator }
+    main.app.chained_locator:
+        class: main\AppBundle\Services\ChainedPlaceLocator
+        tags:
+                    - { name: place_locator_chain }
