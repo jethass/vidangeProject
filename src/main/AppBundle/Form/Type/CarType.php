@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use main\AppBundle\Form\EventListener\CarFieldListener;
 use main\AppBundle\Form\DataTransformer\stringToModelTransformer;
-use main\AppBundle\Form\DataTransformer\arrayToFileTransformer;
 use Doctrine\Common\Persistence\ObjectManager;
 use main\AppBundle\Form\Type\FilesType;
 use main\AppBundle\Form\Type\ImageType;
@@ -69,13 +68,11 @@ class CarType extends AbstractType
                 ->add('dateMec', DateType::class, array(
                     'widget' => 'single_text',
                     'html5' => false,
-                    'label'=>'date mise en circulation',
                     'attr' => ['class' => 'js-datepicker'],
-                    'format' => 'dd/MM/yyyy',
                 ))
  
                 ->add('tags',EntityType::class, array(
-                    'attr'=>array('class'=>"tags",),
+                    'attr'=>array('class'=>"tags"),
                     'label'=>'finition',
                     'choices_as_values' => true,                
                     'class' => 'mainAppBundle:Tag',
@@ -83,23 +80,18 @@ class CarType extends AbstractType
                     'expanded' => false,
                     'multiple'=>true
                 ))
+                ->add('imagePrincipale', ImageType::class,array('required'=>false, 'label'=>false))
 
-
-                ->add('imagePrincipale', ImageType::class,array('required'=>false, 'label'=>'Image Principale :'))
-
-               /* ->add('files', FilesType::class, array(
-                    'label'    =>    'Photos',
-                    'required' =>    true,
-                    'compound'=>true,
-                    'attr'     =>    array(
-                        'accept'  =>  'images/*',
-                    )
-                ))*/
-                ->add('save',SubmitType::class);
-
+                ->add('images', CollectionType::class,array(
+                                'label'=>false,
+                                'entry_type' => ImageType::class,
+                                'allow_add' => true,
+                                'by_reference' => false,
+                ))
+                ->add('save',SubmitType::class,array('attr'=>array('class'=>"btn btn-primary")));
                  $builder->get('marque')->addEventSubscriber(new CarFieldListener($this->manager));
-                 //$builder->get('files')->addModelTransformer(new arrayToFileTransformer($this->manager));
                  $builder->get('model')->addModelTransformer(new stringToModelTransformer($this->manager));
+
     }
     
     /**

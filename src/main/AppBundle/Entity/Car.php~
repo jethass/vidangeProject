@@ -72,8 +72,5 @@ class Car
      */
     private $imagePrincipale;
 
-    // files des images
-    private $files;
-  
-
+ 
 }

@@ -10,55 +10,60 @@
 </div>
 
 {{ form_start(form) }}
-    <div>Marque:</div>
-    <div>
+    <div class="row">Marque:</div>
+    <div class="row">
        {{ form_errors(form.marque) }}
        {{ form_widget(form.marque) }}
     </div>
 
-    <div>Model:</div>
-    <div>
+    <div class="row">Model:</div>
+    <div class="row">
         {{ form_errors(form.model) }}
         {{ form_widget(form.model) }}
     </div>
 
-    <div>Boite de vitesse:</div>
-    <div>
+    <div class="row">Boite de vitesse:</div>
+    <div class="row">
         {{ form_errors(form.boiteVitesse) }}
         {{ form_widget(form.boiteVitesse) }}
     </div>
 
-    <div>Carburant:</div>
-    <div>
+    <div class="row">Carburant:</div>
+    <div class="row">
         {{ form_errors(form.carburant) }}
         {{ form_widget(form.carburant) }}
     </div>
 
-    <div>Date mise en circulation:</div>
-    <div>
+    <div class="row">Date mise en circulation:</div>
+    <div class="row">
         {{ form_errors(form.dateMec) }}
         {{ form_widget(form.dateMec) }}
     </div>
 
-    <div>Finitions:</div>
-    <div id="finition">
+    <div class="row">Finitions:</div>
+    <div class="row" id="finition">
         {{ form_errors(form.tags) }}
         {{ form_widget(form.tags) }}
     </div>
-    {#%
-    <ul id="tags-fields-list"
-        data-prototype="{{ form_widget(form.tags.vars.prototype)|e }}">
-        {% for tagField in form.tags %}
+
+    <div class="row">Image Principal:</div>
+    <div class="row">
+        {{ form_errors(form.imagePrincipale) }}
+        {{ form_widget(form.imagePrincipale) }}
+    </div>
+
+    <div class="row">Autres images:</div>
+    <ul class="row images" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
+        {% for element in form.images %}
             <li>
-                {{ form_errors(tagField) }}
-                {{ form_widget(tagField) }}
+                {{ form_widget(element.file) }}
             </li>
         {% endfor %}
-
     </ul>
-    <li><a href="#" id="add-another-tag">Add another finition</a></li>%#}
+
 
 
 
 {{ form_end(form) }}
+
 {% endblock %}

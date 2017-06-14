@@ -58,7 +58,7 @@ class Car
     /**
      * @var \Date
      *
-     * @ORM\Column(name="date_mec", type="date")
+     * @ORM\Column(name="date_mec", type="datetime")
      */
     private $dateMec;
 
@@ -72,10 +72,7 @@ class Car
      */
     private $imagePrincipale;
 
-    // files des images
-    private $files;
-  
-
+ 
     /**
      * Constructor
      */
@@ -83,7 +80,6 @@ class Car
     {
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
         $this->images = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->files = array();
     }
 
     /**
@@ -307,68 +303,4 @@ class Car
     {
         return $this->imagePrincipale;
     }
-
-    /********personalisé pour l'uplaod***************************/
-    public function setFiles(array $files)
-    {
-        $this->files=$files;
-        if($files != null){
-            foreach ($this->files as $file){
-                $image=new Image();
-                $image->setFile($file);
-                $this->addImage($image);
-            }
-        }
-        return $this;
-    }
-
-
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function preUpload()
-    {
-        foreach ($this->images as $image){
-            $image->preUpload();
-        }
-    }
-
-    /**
-     * @ORM\PostPersist()
-     * @ORM\PostUpdate()
-     */
-    public function upload()
-    {
-        foreach ($this->images as $image){
-            $image->upload();
-        }
-    }
-
-    /**
-     * @ORM\PreRemove()
-     */
-    public function preRemoveUpload()
-    {
-        foreach ($this->images as $image){
-            $image->preRemoveUpload();
-        }
-    }
-
-    /**
-     * @ORM\PostRemove()
-     */
-    public function removeUpload()
-    {
-        foreach ($this->images as $image){
-            $image->removeUpload();
-        }
-    }
-
-    /*************************************/
 }

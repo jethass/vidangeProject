@@ -1,19 +1,36 @@
 services:
+    main.app.formatter_manager:
+        class: main\AppBundle\Mail\EmailFormatterManager
+    main.app.email_configurator:
+        class: main\AppBundle\Mail\EmailConfigurator
+        arguments: ['@main.app.formatter_manager']
+    main.app.mail.newsletterManager:
+        class: main\AppBundle\Mail\NewsletterManager
+        arguments: ['@mailer']
+        configurator: 'main\AppBundle\Mail\EmailConfigurator:configure'
+    main.app.mail.greetingCardManager:
+        class: main\AppBundle\Mail\GreetingCardManager
+        arguments: ['@mailer']
+        configurator: 'main\AppBundle\Mail\EmailConfigurator:configure'
+
     main.app.form.type.car:
         class: main\AppBundle\Form\Type\CarType
         arguments: ['@doctrine.orm.entity_manager']
         tags:
             - { name: form.type }
+
     main.app.google_locator:
         class: main\AppBundle\Services\GooglePlaceLocator
         arguments: ['%key_google%']
         tags:
             - { name: place_locator }
+
     main.app.here_locator:
         class: main\AppBundle\Services\HerePlaceLocator
         arguments: ['%here_api_id%','%here_app_code%']
         tags:
             - { name: place_locator }
+
     main.app.chained_locator:
         class: main\AppBundle\Services\ChainedPlaceLocator
         tags:

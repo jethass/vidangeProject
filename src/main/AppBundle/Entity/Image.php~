@@ -4,6 +4,7 @@ namespace main\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Image
@@ -24,29 +25,17 @@ class Image
     private $id;
 
     /**
-     * @var string $extension
-     *
-     * @ORM\Column(name="extension", type="string", length=255)
-     */
-    private $extension;
-
-    /**
-     * @var string $alt
-     *
-     * @ORM\Column(name="alt", type="string", length=255)
-     */
-    private $alt;
-
-    /**
      * @ORM\ManyToOne(targetEntity="main\AppBundle\Entity\Car", inversedBy="images")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(name="car_id", referencedColumnName="id")
      */
     private $car;
 
+    /**
+     * @ORM\Column(name="file", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Please, upload  file.")
+     */
     private $file;
 
-    private $tempFilename;
-  
 
- 
+
 }

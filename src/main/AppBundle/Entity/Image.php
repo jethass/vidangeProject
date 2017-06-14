@@ -4,6 +4,8 @@ namespace main\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Image
@@ -24,32 +26,19 @@ class Image
     private $id;
 
     /**
-     * @var string $extension
-     *
-     * @ORM\Column(name="extension", type="string", length=255)
-     */
-    private $extension;
-
-    /**
-     * @var string $alt
-     *
-     * @ORM\Column(name="alt", type="string", length=255)
-     */
-    private $alt;
-
-    /**
      * @ORM\ManyToOne(targetEntity="main\AppBundle\Entity\Car", inversedBy="images")
      * @ORM\JoinColumn(name="car_id", referencedColumnName="id")
      */
     private $car;
 
-
+    /**
+     * @ORM\Column(name="file", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Please, upload  file.")
+     */
     private $file;
 
-    private $tempFilename;
-  
 
- 
+
 
     /**
      * Get id
@@ -62,51 +51,27 @@ class Image
     }
 
     /**
-     * Set extension
+     * Set file
      *
-     * @param string $extension
+     * @param string $file
      *
      * @return Image
      */
-    public function setExtension($extension)
+    public function setFile($file)
     {
-        $this->extension = $extension;
+        $this->file = $file;
 
         return $this;
     }
 
     /**
-     * Get extension
+     * Get file
      *
      * @return string
      */
-    public function getExtension()
+    public function getFile()
     {
-        return $this->extension;
-    }
-
-    /**
-     * Set alt
-     *
-     * @param string $alt
-     *
-     * @return Image
-     */
-    public function setAlt($alt)
-    {
-        $this->alt = $alt;
-
-        return $this;
-    }
-
-    /**
-     * Get alt
-     *
-     * @return string
-     */
-    public function getAlt()
-    {
-        return $this->alt;
+        return $this->file;
     }
 
     /**
@@ -132,92 +97,4 @@ class Image
     {
         return $this->car;
     }
-
-
-    /*********personalisé pour upload******/
-    public function setFile(File $file)
-    {
-        $this->file = $file;
-        if (null !== $this->extension) {
-            $this->tempFilename = $this->extension;
-
-            $this->extension = null;
-            $this->alt = null;
-        }
-    }
-
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function preUpload()
-    {
-        if (null === $this->file) {
-            return;
-        }
-        $this->extension = $this->file->guessExtension();
-
-        $this->alt = $this->file->getClientOriginalName();
-    }
-
-    /**
-     * @ORM\PostPersist()
-     * @ORM\PostUpdate()
-     */
-    public function upload()
-    {
-        if (null === $this->file) {
-            return;
-        }
-        if (null !== $this->tempFilename) {
-            $oldFile = $this->getUploadRootDir().'/'.$this->id.'.'.$this->tempFilename;
-            if (file_exists($oldFile)) {
-                unlink($oldFile);
-            }
-        }
-        $this->file->move(
-            $this->getUploadRootDir(), // Le répertoire de destination
-            $this->id.'.'.$this->extension   // Le nom du fichier à créer, ici « id.extension »
-        );
-    }
-
-    /**
-     * @ORM\PreRemove()
-     */
-    public function preRemoveUpload()
-    {
-        $this->tempFilename = $this->getUploadRootDir().'/'.$this->id.'.'.$this->extension;
-    }
-
-    /**
-     * @ORM\PostRemove()
-     */
-    public function removeUpload()
-    {
-        if (file_exists($this->tempFilename)) {
-            unlink($this->tempFilename);
-        }
-    }
-
-    public function getUploadDir()
-    {
-        return 'uploads/img';
-    }
-
-    protected function getUploadRootDir()
-    {
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
-    }
-
-    public function getWebPath()
-    {
-        return $this->getUploadDir().'/'.$this->getNomImage();
-    }
-    /*****************************fin *********************/
 }

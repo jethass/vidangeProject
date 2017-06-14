@@ -1,0 +1,31 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+
+    <table class="table">
+        <tr>
+            <td>Marque</td>
+            <td>Model</td>
+            <td>Mise en circulation</td>
+            <td>Boite vitesse</td>
+            <td>Carburant</td>
+            <td>Finitions</td>
+            <td> </td>
+        </tr>
+        {% for car in cars %}
+        <tr>
+            <td>{{ car.marque.name }}</td>
+            <td>{{ car.model.name }}</td>
+            <td>{{ car.dateMec|date("m/d/Y") }}</td>
+            <td>{{ car.boiteVitesse }}</td>
+            <td>{{ car.carburant }}</td>
+            <td>
+                {% for tag in car.tags %}
+                    {{ tag.name }},
+                {% endfor %}
+            </td>
+            <td><img width="120px" src="{{ asset('uploads/'~car.imagePrincipale.file) }}" /> </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

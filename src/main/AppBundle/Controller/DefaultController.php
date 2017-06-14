@@ -17,16 +17,46 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
+
+    /**
+     * @Route("/")
+     */
+    public function listCarAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cars=$em->getRepository('mainAppBundle:Car')->findAll();
+        return $this->render('mainAppBundle:Default:listcar.html.twig', array('cars'=> $cars));
+    }
+
+
     /**
      * @Route("/car")
      */
-    public function indexAction(Request $request)
+    public function createCarAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $car = new Car();
         $form = $this->createForm(CarType::class, $car);
 
         if ($form->handleRequest($request)->isValid()) {
+            $image_principal=$car->getImagePrincipale();
+            $file_principal = $image_principal->getFile();
+            $filename_principal = md5(uniqid()) . '.' .$file_principal->guessExtension();
+            $file_principal->move($this->getParameter('upload_path'), $filename_principal);
+            $image_principal->setFile($filename_principal);
+            $image_principal->setCar($car);
+
+            $images = $car->getImages();
+            if ($images) {
+                foreach($images as $image)
+                {
+                    $file = $image->getFile();
+                    $filename = md5(uniqid()) . '.' .$file->guessExtension();
+                    $file->move($this->getParameter('upload_path'), $filename);
+                    $image->setFile($filename);
+                    $image->setCar($car);
+                }
+            }
             $em->persist($car);
             $em->flush();
             $this->addFlash(
@@ -34,7 +64,7 @@ class DefaultController extends Controller
                 'car  enregistrée.'
             );
         }
-        return $this->render('mainAppBundle:Default:index.html.twig', array('form'=> $form->createView()));
+        return $this->render('mainAppBundle:Default:createcar.html.twig', array('form'=> $form->createView()));
     }
 
     /**
@@ -74,7 +104,7 @@ class DefaultController extends Controller
     /**
      * @Route("/marque")
      */
-    public function insertMarqueAction(Request $request)
+    public function CreateMarqueAction(Request $request)
     {
 
         $marque = new Marque();
@@ -92,14 +122,14 @@ class DefaultController extends Controller
 
         }
 
-        return $this->render('mainAppBundle:Default:insertmarque.html.twig', array('form'=> $form->createView()));
+        return $this->render('mainAppBundle:Default:createmarque.html.twig', array('form'=> $form->createView()));
 
     }
    
     /**
      * @Route("/model")
      */
-    public function insertModelAction(Request $request)
+    public function CreateModelAction(Request $request)
     {
 
         $model = new Model();
@@ -116,13 +146,14 @@ class DefaultController extends Controller
             );
         }
 
-        return $this->render('mainAppBundle:Default:insertmodel.html.twig', array('form'=> $form->createView()));
+        return $this->render('mainAppBundle:Default:createmodel.html.twig', array('form'=> $form->createView()));
     }
+
 
     /**
      * @Route("/loadtags")
      */
-    public function loaFisxturesdAction()
+    public function loaFisxturesTagsdAction()
     {
         $em = $this->getDoctrine()->getManager();
         $marque=$em->getRepository('mainAppBundle:Marque')->findOneBy(array('name'=>'Fiat'));
