@@ -1,7 +1,18 @@
 {% extends '::base.html.twig' %}
 {% block body %}
+    <section xmlns="http://www.w3.org/1999/html">
+        <div class="row">
+            <div class="col-md-3">
+                <h3>liste voiture
+                </h3>
+            </div>
 
-    <table class="table">
+            <div class="col-md-3"><a href="{{ path('create_marque') }}" />Ajouter une marque</a></div>
+            <div class="col-md-3"><a href="{{ path('create_model') }}" />Ajouter un model</a></div>
+            <div class="col-md-3"><a href="{{ path('create_car') }}" />Ajouter voiture</a></div>
+        </div>
+
+        <table class="table">
         <tr>
             <td>Marque</td>
             <td>Model</td>
@@ -23,9 +34,9 @@
                     {{ tag.name }},
                 {% endfor %}
             </td>
-            <td><img width="120px" src="{{ asset('uploads/'~car.imagePrincipale.file) }}" /> </td>
+            <td><img class="img-thumbnail" width="120px" src="{{ asset('uploads/'~car.imagePrincipale.file) }}" /> </td>
         </tr>
         {% endfor %}
     </table>
-
+    </section>
 {% endblock %}

@@ -9,7 +9,7 @@
     {% endfor %}
 </div>
 
-{{ form_start(form) }}
+{{ form_start(form ) }}
     <div class="row">Marque:</div>
     <div class="row">
        {{ form_errors(form.marque) }}
@@ -52,7 +52,9 @@
         {{ form_widget(form.imagePrincipale) }}
     </div>
 
+
     <div class="row">Autres images:</div>
+
     <ul class="row images" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
         {% for element in form.images %}
             <li>
@@ -61,9 +63,15 @@
         {% endfor %}
     </ul>
 
+    {#
+        <div class="row">Autres images:</div>
+        <form enctype="multipart/form-data" class="dropzone" action="{{path('ajax_image_send')}}" method="post" id="form_image">
+            <div class="fallback">
+                <input name="file" type="file" multiple />
+            </div>
+        </form>
+    #}
 
-
-
-{{ form_end(form) }}
+    {{ form_end(form) }}
 
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace main\AppBundle\Controller;
 
+use main\AppBundle\Entity\Image;
 use main\AppBundle\Entity\Marque;
 use main\AppBundle\Entity\Model;
 use main\AppBundle\Entity\Tag;
@@ -9,11 +10,13 @@ use main\AppBundle\Form\Type\MarqueType;
 use main\AppBundle\Form\Type\ModelType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use main\AppBundle\Entity\Car;
 use main\AppBundle\Form\Type\CarType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -30,7 +33,29 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/car")
+     *
+     * @Method({"GET", "POST"})
+     * @Route("/ajax/image/send", name="ajax_image_send")
+     */
+    public function ajaxImageSendAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cars=$em->getRepository('mainAppBundle:Car')->findAll();
+        $file = $request->files->get('file');
+        $file_name = $file->getClientOriginalName();
+        $tab=explode('.',$file_name);
+        $filename = md5(uniqid()) . '.' .$tab[1];
+        $file->move($this->getParameter('upload_path'), $filename);
+        $image =new Image();
+        $image->setFile($filename);
+        $image->setCar(count($cars)+1);
+        $em->persist($image);
+        $em->flush();
+        return new JsonResponse(array('success' => true));
+    }
+
+    /**
+     * @Route("/car", name="create_car")
      */
     public function createCarAction(Request $request)
     {
@@ -45,7 +70,6 @@ class DefaultController extends Controller
             $file_principal->move($this->getParameter('upload_path'), $filename_principal);
             $image_principal->setFile($filename_principal);
             $image_principal->setCar($car);
-
             $images = $car->getImages();
             if ($images) {
                 foreach($images as $image)
@@ -102,7 +126,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/marque")
+     * @Route("/marque", name="create_marque")
      */
     public function CreateMarqueAction(Request $request)
     {
@@ -127,7 +151,7 @@ class DefaultController extends Controller
     }
    
     /**
-     * @Route("/model")
+     * @Route("/model" , name="create_model")
      */
     public function CreateModelAction(Request $request)
     {

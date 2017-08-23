@@ -6,6 +6,11 @@ var $collectionHolder;
 var $addTagLink = $('<a href="#" class="add_tag_link">Add image</a>');
 var $newLinkLi = $('<li></li>').append($addTagLink);
 
+//var _actionToDropZone = $("#form_image").attr('action');
+//Dropzone.autoDiscover = false;
+//var myDropzone = new Dropzone("#main_appbundle_car_file", { url: _actionToDropZone });
+
+
 $("document").ready(function(){
 
     $('.js-datepicker').datepicker({
@@ -51,6 +56,9 @@ $("document").ready(function(){
         // add a new tag form (see next code block)
         addTagForm($collectionHolder, $newLinkLi);
     });
+
+
+
     
 });
 

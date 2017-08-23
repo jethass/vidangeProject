@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use main\AppBundle\Form\Type\TagType;
 use Symfony\Component\Form\FormEvent;
@@ -88,6 +89,12 @@ class CarType extends AbstractType
                                 'allow_add' => true,
                                 'by_reference' => false,
                 ))
+               
+               /* ->add('file', FileType::class,array(
+                    'label'=>false,
+                    'attr'=>array("multiple" => "multiple")
+                ))*/
+                   
                 ->add('save',SubmitType::class,array('attr'=>array('class'=>"btn btn-primary")));
                  $builder->get('marque')->addEventSubscriber(new CarFieldListener($this->manager));
                  $builder->get('model')->addModelTransformer(new stringToModelTransformer($this->manager));

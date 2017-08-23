@@ -72,6 +72,7 @@ class Car
      */
     private $imagePrincipale;
 
+    //private $file;
  
     /**
      * Constructor
